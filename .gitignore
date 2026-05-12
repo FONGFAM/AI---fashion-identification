@@ -1,0 +1,39 @@
+# Environments
+venv/
+env/
+.env
+.venv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# IDEs / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# AI Models
+*.h5
+*.keras
+*.pb
+*.tflite
+model/
+
+# Uploaded images / Data
+static/uploads/
+dataset/
+*.jpg
+*.jpeg
+*.png
+*.gif
+
+# OS generated files
+.DS_Store
+Thumbs.db
