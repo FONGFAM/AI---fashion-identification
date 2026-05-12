@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhận diện Thời trang AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="container">
+        <header class="text-center">
+            <h1>Phân Loại Hình Ảnh</h1>
+            <p>Hệ thống nhận diện quần áo & giày dép sử dụng AI</p>
+        </header>
+
+        <section class="upload-section">
+            <div id="drop-area" class="drop-area">
+                <input type="file" id="fileElem" accept="image/*" class="file-input">
+                <label for="fileElem" class="upload-label">
+                    <h3>Chọn hoặc Kéo thả ảnh vào đây</h3>
+                    <p>JPG, PNG, JPEG</p>
+                </label>
+            </div>
+            
+            <div id="preview-container" class="preview-container hidden">
+                <div class="image-wrapper">
+                    <img id="image-preview" src="" alt="Image Preview">
+                </div>
+                <div class="actions">
+                    <button id="btn-predict" class="btn btn-primary">Bắt đầu phân tích</button>
+                    <button id="btn-reset" class="btn btn-secondary">Hủy bỏ</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="result-section" class="result-section hidden">
+            <div class="result-card">
+                <div class="result-info">
+                    <span class="label">Phân loại:</span>
+                    <strong id="result-name" class="value"></strong>
+                </div>
+                <div class="result-info">
+                    <span class="label">Độ tin cậy:</span>
+                    <strong id="result-confidence" class="value"></strong>
+                </div>
+                <div id="mock-warning" class="mock-warning hidden">
+                    Đang chạy ở chế độ mô phỏng (Chưa tải mô hình thực tế)
+                </div>
+            </div>
+        </section>
+        
+        <!-- Loading Overlay -->
+        <div id="loading" class="loading-overlay hidden">
+            <div class="spinner"></div>
+            <p>Đang xử lý...</p>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
