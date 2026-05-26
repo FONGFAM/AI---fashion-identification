@@ -20,11 +20,6 @@ __pycache__/
 *.swo
 
 # AI Models
-*.h5
-*.keras
-*.pb
-*.tflite
-model/
 
 # Uploaded images / Data
 static/uploads/
