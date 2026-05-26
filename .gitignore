@@ -22,12 +22,6 @@ __pycache__/
 # AI Models
 
 # Uploaded images / Data
-static/uploads/
-dataset/
-*.jpg
-*.jpeg
-*.png
-*.gif
 
 # OS generated files
 .DS_Store
