@@ -3,58 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nhận diện Thời trang AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Nhận diện Thời trang AI | Fashion MNIST</title>
+    <meta name="description" content="Hệ thống nhận diện quần áo và giày dép thông minh sử dụng mạng nơ-ron CNN được huấn luyện trên tập dữ liệu Fashion MNIST.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <main class="container">
+
+    <main class="container" role="main">
+
+        <!-- Header -->
         <header class="text-center">
-            <h1>Phân Loại Hình Ảnh</h1>
-            <p>Hệ thống nhận diện quần áo & giày dép sử dụng AI</p>
+            <div class="header-badge">✨ Powered by CNN + Fashion MNIST</div>
+            <h1>Nhận Diện Thời Trang</h1>
+            <p>Tải lên ảnh quần áo hoặc giày dép để AI phân loại ngay lập tức</p>
         </header>
 
-        <section class="upload-section">
-            <div id="drop-area" class="drop-area">
-                <input type="file" id="fileElem" accept="image/*" class="file-input">
+        <!-- Upload Section -->
+        <section class="upload-section" aria-label="Khu vực tải ảnh">
+
+            <!-- Drop Zone -->
+            <div id="drop-area" class="drop-area" role="button" tabindex="0" aria-label="Khu vực kéo thả hoặc chọn ảnh">
+                <input type="file" id="fileElem" accept="image/*" class="file-input" aria-label="Chọn file ảnh">
+                <div class="upload-icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                </div>
                 <label for="fileElem" class="upload-label">
                     <h3>Chọn hoặc Kéo thả ảnh vào đây</h3>
-                    <p>JPG, PNG, JPEG</p>
+                    <p>Hỗ trợ JPG, PNG, JPEG · Hoặc dán ảnh (Ctrl+V)</p>
                 </label>
+                <div class="supported-classes" aria-label="Các loại trang phục được hỗ trợ">
+                    <span>👕</span><span>👖</span><span>🧥</span><span>👗</span><span>🥼</span>
+                    <span>👡</span><span>👔</span><span>👟</span><span>👜</span><span>👢</span>
+                </div>
             </div>
-            
+
+            <!-- Preview -->
             <div id="preview-container" class="preview-container hidden">
                 <div class="image-wrapper">
-                    <img id="image-preview" src="" alt="Image Preview">
+                    <img id="image-preview" src="" alt="Ảnh đã chọn">
+                    <div class="image-overlay">
+                        <label for="fileElem" class="change-image-btn" title="Đổi ảnh">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Đổi ảnh
+                        </label>
+                    </div>
                 </div>
                 <div class="actions">
-                    <button id="btn-predict" class="btn btn-primary">Bắt đầu phân tích</button>
-                    <button id="btn-reset" class="btn btn-secondary">Hủy bỏ</button>
+                    <button id="btn-predict" class="btn btn-primary" aria-label="Bắt đầu phân tích ảnh">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        Bắt đầu phân tích
+                    </button>
+                    <button id="btn-reset" class="btn btn-secondary" aria-label="Hủy và chọn ảnh khác">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+                        Làm mới
+                    </button>
                 </div>
             </div>
         </section>
 
-        <section id="result-section" class="result-section hidden">
+        <!-- Result Section -->
+        <section id="result-section" class="result-section hidden" aria-live="polite" aria-label="Kết quả phân tích">
             <div class="result-card">
-                <div class="result-info">
-                    <span class="label">Phân loại:</span>
-                    <strong id="result-name" class="value"></strong>
+                <div class="result-header">
+                    <span id="result-icon" class="result-icon" aria-hidden="true">🏷️</span>
+                    <div class="result-title-group">
+                        <span class="result-label">Kết quả phân loại</span>
+                        <strong id="result-name" class="result-name"></strong>
+                    </div>
                 </div>
-                <div class="result-info">
-                    <span class="label">Độ tin cậy:</span>
-                    <strong id="result-confidence" class="value"></strong>
+
+                <div class="result-divider"></div>
+
+                <div class="result-confidence-block">
+                    <div class="confidence-header">
+                        <span class="confidence-label">Độ tin cậy</span>
+                        <strong id="result-confidence" class="confidence-percent"></strong>
+                    </div>
+                    <div class="confidence-track" role="progressbar" aria-label="Thanh độ tin cậy">
+                        <div id="confidence-bar" class="confidence-bar"></div>
+                    </div>
                 </div>
-                <div id="mock-warning" class="mock-warning hidden">
-                    Đang chạy ở chế độ mô phỏng (Chưa tải mô hình thực tế)
+
+                <div class="result-divider"></div>
+
+                <!-- AI view debug section -->
+                <div class="ai-view-block">
+                    <div class="ai-view-header">
+                        <span class="ai-view-label">GÓC NHÌN THỰC TẾ CỦA AI (28x28)</span>
+                    </div>
+                    <div class="ai-view-content">
+                        <div class="ai-view-img-wrapper">
+                            <img id="ai-processed-preview" src="" alt="Ảnh qua mắt AI">
+                        </div>
+                        <p class="ai-view-desc">
+                            Mô hình nhận diện ảnh ở độ phân giải 28x28 (ảnh xám nhị phân, vật thể màu sáng trên nền tối). 
+                            Nếu ảnh dưới đây bị mờ mất hình dáng, ngược màu nền hoặc bị cắt sai lệch, AI sẽ dự đoán kém chính xác.
+                        </p>
+                    </div>
+                </div>
+
+                <div id="mock-warning" class="mock-warning hidden" role="alert">
+                    ⚠️ Đang chạy ở chế độ mô phỏng (Chưa tải mô hình thực tế)
                 </div>
             </div>
         </section>
-        
+
         <!-- Loading Overlay -->
-        <div id="loading" class="loading-overlay hidden">
-            <div class="spinner"></div>
-            <p>Đang xử lý...</p>
+        <div id="loading" class="loading-overlay hidden" role="status" aria-label="Đang xử lý">
+            <div class="spinner" aria-hidden="true"></div>
+            <p>Đang phân tích ảnh...</p>
+            <span class="loading-sub">AI đang xử lý, vui lòng đợi</span>
         </div>
+
     </main>
 
     <script src="js/main.js"></script>
